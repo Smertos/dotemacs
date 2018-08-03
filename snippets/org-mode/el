@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: Org-mode elisp code snippet
+# key: el
+# --
+#+BEGIN_SRC emacs-lisp
+$1
+#+END_SRC

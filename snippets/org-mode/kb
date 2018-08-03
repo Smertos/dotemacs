@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: org mode elisp key binding
+# key: kb
+# --
+(global-set-key (kbd "${1:C-x x}") '${2:action})

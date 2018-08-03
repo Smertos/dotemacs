@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: Org-mode package section
+# key: ps
+# --
+** ${1:Package Name}
+$2
+#+BEGIN_SRC emacs-lisp
+up$3
+#+END_SRC

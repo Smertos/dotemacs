@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: Node require with ES6 destruction
+# key: rqd
+# --
+const { $1 } = require('$2');
+$3
