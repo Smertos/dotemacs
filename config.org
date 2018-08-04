@@ -1,5 +1,5 @@
 #+TITLE:  Smertos' Emacs Config
-#+AUTHOR: Smertos
+#+AUTHOR: Mikhail Vedernikov
 #+EMAIL:  misha.smert@gmail.com
 * General Configuration
 ** Get path to .emacs.d directory
