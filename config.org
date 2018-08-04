@@ -139,47 +139,57 @@ Redirect all backups into special directory
 #+END_SRC
 
 * Packages
+ Preparation config and some base packages
 ** Enable use-package
 Used by every package for easy installation
 Ensures in portability of config
 #+BEGIN_SRC emacs-lisp
-  (require 'use-package)
-#+END_SRC
-  
-** All the icons
-#+BEGIN_SRC emacs-lisp
-(use-package all-the-icons :ensure t)
+(require 'use-package)
 #+END_SRC
 
-** i3 compatability
+Ensure all packages gets installed
 #+BEGIN_SRC emacs-lisp
-(use-package i3wm :ensure t)
+(setq use-package-always-ensure t)
+#+END_SRC
+
+** i3wm compatability
+#+BEGIN_SRC emacs-lisp
+(use-package i3wm)
 #+END_SRC
 
 ** Editor Theme - gruvbox
 #+BEGIN_SRC emacs-lisp
-(use-package gruvbox-theme :ensure t)
+(use-package gruvbox-theme)
 #+END_SRC
 
 ** Exec PATH from shell
 #+BEGIN_SRC emacs-lisp
-(use-package exec-path-from-shell
-  :ensure t
-  :config (exec-path-from-shell-initialize))
+  (use-package exec-path-from-shell
+    :config (exec-path-from-shell-initialize)
+            (setq exec-path-from-shell-check-startup-files nil))
+#+END_SRC
+
+
+All the packages
+** Aggressive indent
+#+BEGIN_SRC emacs-lisp
+(use-package aggressive-indent :hook (prog-mode . aggressive-indent-mode))
+#+END_SRC
+
+** All the icons
+#+BEGIN_SRC emacs-lisp
+(use-package all-the-icons)
 #+END_SRC
 
 ** Company
 Install the company mode
 #+BEGIN_SRC emacs-lisp
-(use-package company
-  :ensure t
-  :config (global-company-mode +1))
+(use-package company :config (global-company-mode +1))
 #+END_SRC
 
 Install lsp addon
 #+BEGIN_SRC emacs-lisp
 (use-package company-lsp
-  :ensure t
   :after (company lsp-mode)
   :config (push 'company-lsp company-backends)
           (setq company-lsp-async t))
@@ -187,23 +197,19 @@ Install lsp addon
 
 ** Dashboard
 #+BEGIN_SRC emacs-lisp
-(use-package dashboard
-  :ensure t
-  :config (dashboard-setup-startup-hook))
+(use-package dashboard :init (dashboard-setup-startup-hook))
 #+END_SRC
 
 ** Flycheck
 Install the flycheck
 #+BEGIN_SRC emacs-lisp
-(use-package flycheck :ensure t)
+(use-package flycheck)
 #+END_SRC
-
 
 ** Highlight indent guide
 Highlights indentation in code
 #+BEGIN_SRC emacs-lisp
 (use-package highlight-indent-guides
-  :ensure t
   :config (setq highlight-indent-guides-method 'column)
   :hook (prog-mode . highlight-indent-guides-mode))
 #+END_SRC
@@ -231,35 +237,55 @@ Highlights indentation in code
   (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
   (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history))
 
-(use-package counsel :ensure t)
-(use-package counsel-projectile :ensure t)
-(use-package ivy
-  :ensure t
-  :config (my-ivy-config))
-(use-package swiper :ensure t)
+(use-package counsel)
+(use-package counsel-projectile)
+(use-package ivy :config (my-ivy-config))
+(use-package swiper)
 #+END_SRC
 
 ** JS2
 #+BEGIN_SRC emacs-lisp
-(use-package js2-mode :ensure t)
+(use-package js2-mode)
+#+END_SRC
+
+** JSON
+#+BEGIN_SRC emacs-lisp
+(use-package json-mode)
 #+END_SRC
 
 ** LSP
 Install the mode first
 #+BEGIN_SRC emacs-lisp
-(use-package lsp-mode :ensure t)
+(use-package lsp-mode)
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
-(use-package lsp-ui :ensure t :after (lsp-mode flycheck) :hook (lsp-mode . lsp-ui-mode))
+(use-package lsp-ui
+  :after (lsp-mode flycheck)
+  :hook (lsp-mode . lsp-ui-mode))
 #+END_SRC
 
 Backends:
+*** CSS
+#+BEGIN_SRC emacs-lisp
+(use-package lsp-css
+  :after (lsp-mode)
+  :hook ((css-mode . (lambda () (when (eq major-mode 'css-mode) (lsp-css-enable))))
+         ((sass-mode scss-mode) . lsp-scss-enable)
+         (less-mode . lsp-less-enable)))
+#+END_SRC
+
+*** HTML
+#+BEGIN_SRC emacs-lisp
+(use-package lsp-html
+  :after (lsp-mode)
+  :hook (html-mode . lsp-html-enable))
+#+END_SRC
+
 *** Javascript/Typescript
 Install lsp client for javascript-typescript
 #+BEGIN_SRC emacs-lisp
 (use-package lsp-javascript-typescript
-  :ensure t
   :after (lsp-mode js2-mode typescript-mode)
   :hook ((js-mode js2-mode typescript-mode) . lsp-javascript-typescript-enable))
 #+END_SRC
@@ -282,39 +308,36 @@ lsp-javascript-typescript doesn't handle this yes; for now the following can be 
 ** Magit
 Best Git UI ever.
 #+BEGIN_SRC emacs-lisp
-(use-package magit :ensure t)
+(use-package magit)
 #+END_SRC
 
 ** Powerline
-Install powerline
+Install the powerline
 #+BEGIN_SRC emacs-lisp
-(use-package powerline :ensure t)
-#+END_SRC
-
-Install a theme for powerline
-#+BEGIN_SRC emacs-lisp
-(use-package spaceline :ensure t :after powerline :config (spaceline-emacs-theme))
-(use-package spaceline-all-the-icons :ensure t :after (powerline spaceline))
+(use-package powerline)
+(use-package spaceline :after powerline)
+(use-package spaceline-all-the-icons
+  :after (all-the-icons powerline spaceline)
+  :config (spaceline-all-the-icons-theme)
+          (spaceline-all-the-icons-toggle-slim))
 #+END_SRC
 
 ** Projectile
 #+BEGIN_SRC emacs-lisp
 (use-package projectile
-  :ensure t
   :config (projectile-mode t)
-  :init (setq projectile-require-project-root nil))
+          (setq projectile-require-project-root nil))
 #+END_SRC
 
-** Org mode & addons
+** Org
 #+BEGIN_SRC emacs-lisp
 (use-package org
-  :ensure t
   :hook (org-mode . org-bullets-mode)
         (org-mode . org-indent-mode))
-(use-package org-beautify-theme :ensure t :after org)
-(use-package org-bullets :ensure t :after org)
-(use-package ox-ioslide :ensure t :after org)
-(use-package ox-twbs :ensure t :after org)
+(use-package org-beautify-theme :after org)
+(use-package org-bullets :after org)
+(use-package ox-ioslide :after org)
+(use-package ox-twbs :after org)
 #+END_SRC
 
 *** Setup keywords and their colors
@@ -330,18 +353,27 @@ Install a theme for powerline
                                 ("DONE" . "green")))
 #+END_SRC
 
+** Smartparens
+#+BEGIN_SRC emacs-lisp
+(use-package smartparens)
+#+END_SRC
+
 ** Typescript
 Install the mode for typescript
 #+BEGIN_SRC emacs-lisp
-(use-package typescript-mode :ensure t)
+(use-package typescript-mode)
+#+END_SRC
+
+** Web-mode
+#+BEGIN_SRC emacs-lisp
+(use-package web-mode :init (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode)))
 #+END_SRC
 
 ** Yasnippet
 #+BEGIN_SRC emacs-lisp
 (use-package yasnippet
-  :ensure t
-  :config (setq yas-snippet-dirs '("~/.emacs.d/snippets"))
-          (yas-global-mode 1))
-(use-package yasnippet-snippets :ensure t :after yasnippet)
+  :config (yas-global-mode 1)
+          (setq yas-snippet-dirs '("~/.emacs.d/snippets")))
+(use-package yasnippet-snippets :after yasnippet)
 #+END_SRC
 

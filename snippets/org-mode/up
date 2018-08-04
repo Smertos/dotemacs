@@ -2,4 +2,4 @@
 # name: Org-mode ELisp use-package
 # key: up
 # --
-(use-package $1 :ensure t$2)
+(use-package $1)

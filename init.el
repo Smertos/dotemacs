@@ -15,8 +15,14 @@
 
 ;; Bootstrap use-package
 (unless (package-installed-p 'use-package)
+  (message "Installing use-package")
   (package-refresh-contents)
   (package-install 'use-package))
+
+(unless (package-installed-p 'use-package)
+  (error "Couldn't install use-package!"))
+
+(eval-when-compile (require 'use-package))
 
 ;; Path to config.org
 (defconst config-path "~/.emacs.d/config.org")
