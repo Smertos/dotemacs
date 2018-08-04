@@ -159,7 +159,7 @@ Ensure all packages gets installed
 
 ** Editor Theme - gruvbox
 #+BEGIN_SRC emacs-lisp
-(use-package gruvbox-theme)
+(use-package gruvbox-theme :init (load-theme 'gruvbox-dark-medium t))
 #+END_SRC
 
 ** Exec PATH from shell
@@ -334,7 +334,7 @@ Install the powerline
 (use-package org
   :hook (org-mode . org-bullets-mode)
         (org-mode . org-indent-mode))
-(use-package org-beautify-theme :after org)
+(use-package org-beautify-theme :after (org gruvbox-theme) :init (load-theme 'org-beautify t))
 (use-package org-bullets :after org)
 (use-package ox-ioslide :after org)
 (use-package ox-twbs :after org)
