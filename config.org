@@ -266,10 +266,19 @@ Install the mode first
 #+END_SRC
 
 Backends:
+*** C/C++
+#+BEGIN_SRC emacs-lisp
+(use-package cquery
+  :after lsp-mode
+  :config (setq cquery-executable "/usr/bin/cquery")
+          (setq cquery-extra-init-params '(:index (:comments 2) :cacheFormat "msgpack"))
+  :hook (c++-mode . lsp-cquery-enable))
+#+END_SRC
+
 *** CSS
 #+BEGIN_SRC emacs-lisp
 (use-package lsp-css
-  :after (lsp-mode)
+  :after lsp-mode
   :hook ((css-mode . (lambda () (when (eq major-mode 'css-mode) (lsp-css-enable))))
          ((sass-mode scss-mode) . lsp-scss-enable)
          (less-mode . lsp-less-enable)))
@@ -278,7 +287,7 @@ Backends:
 *** HTML
 #+BEGIN_SRC emacs-lisp
 (use-package lsp-html
-  :after (lsp-mode)
+  :after lsp-mode
   :hook (html-mode . lsp-html-enable))
 #+END_SRC
 
