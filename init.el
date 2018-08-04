@@ -11,7 +11,9 @@
                          ("gnu"       . "http://elpa.gnu.org/packages/")
                          ("melpa"     . "http://melpa.org/packages/")))
 
-(when (version< emacs-version "27.0") (package-initialize))
+;; Ignore the warnings for emacs >= 27.0
+;; Because this line is required regardless of the version
+(package-initialize)
 
 ;; Bootstrap use-package
 (unless (package-installed-p 'use-package)
